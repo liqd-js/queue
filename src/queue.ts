@@ -13,7 +13,7 @@ export default class Queue<T>
 	{
 		let new_data = new Array( Math.ceil( this.data.length * 1.35 ));
 
-		for( let i = 0; i < this.count; i++ )
+		for( let i = 0; i < this.count; ++i )
 		{
 			new_data[i] = this.data[(this.head + i) % this.data.length];
 		}
@@ -65,5 +65,27 @@ export default class Queue<T>
 		this.count = 0;
 
 		return this;
+	}
+
+	public delete( item: T ): boolean
+	{
+		for( let i = 0; i < this.count; ++i )
+		{
+			if( this.data[(this.head + i) % this.data.length] === item )
+			{
+				this.data[(this.head + i) % this.data.length] = undefined;
+				
+				for( let j = i; j < this.count; ++j )
+				{
+					this.data[(this.head + j) % this.data.length] = this.data[(this.head + j + 1) % this.data.length];
+				}
+
+				--this.count;
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
